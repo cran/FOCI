@@ -1,0 +1,49 @@
+---
+title: "codec"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{codec}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+### Dependence and Conditional Dependence
+For random variable $Y$ and random vectors $Z$ and $X$, $T(Y, Z\mid X)\in[0, 1]$, conditional dependence coefficient, gives us a measure of dependence of $Y$ and $Z$ given $X$, which is zero if and only if $Y$ is independent of $Z$ given $X$ and is 1 if and only if $Y$ is a function of $Z$ given $X$. Function `codec` estimates this value. The default value for $X$ is `NULL` and if is not provided by the user, it gives the dependence measure of $Y$ on $Z$. For more details on the definition of $T$ and its properties, see the paper [*A Simple Measure Of Conditional Dependence*](https://arxiv.org/pdf/1910.12327.pdf).
+
+Below you can see a simple example of this measure.
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+knitr::opts_chunk$set(fig.width=7, fig.height=5) 
+```
+
+```{r setup, results='hide', message=FALSE, warning=FALSE}
+library(FOCI)
+```
+
+```{r}
+n = 10000
+x1 = matrix(runif(n), ncol = 1)
+x2 = matrix(runif(n), ncol = 1)
+x3 = matrix(runif(n), ncol = 1)
+y = (x1 + x2 + x3) %% 1
+# y is independent of each of x1 and x2 and x3 
+codec(y, x1)
+codec(y, x2)
+codec(y, x3)
+
+# y is independent of the pair (x1, x2)
+codec(y, cbind(x1, x2))
+
+# y is a function of (x1, x2, x3)
+codec(y, cbind(x1, x2, x3))
+
+# conditional on x3, y is a function of (x1, x2)
+codec(y, cbind(x1, x2), x3)
+# conditional on x3, y is independent of x1
+codec(y, x1, x3)
+
+```
+
