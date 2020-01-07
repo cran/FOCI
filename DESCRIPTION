@@ -1,7 +1,7 @@
 Package: FOCI
 Type: Package
 Title: Feature Ordering by Conditional Independence
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(person("Mona", "Azadkia", email = "monaazadkia@gmail.com", 
     role = c("aut", "cre")),
     person("Sourav", "Chatterjee", email = "souravc@stanford.edu",
@@ -15,10 +15,11 @@ LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 7.0.2
 Suggests: knitr, rmarkdown
+Depends: R (>= 3.6.0)
 Imports: RANN, magrittr, dplyr, proxy
 NeedsCompilation: no
-Packaged: 2019-12-16 17:24:06 UTC; monaazadkia
+Packaged: 2020-01-07 07:20:51 UTC; monaazadkia
 Author: Mona Azadkia [aut, cre],
   Sourav Chatterjee [aut, ctb]
 Repository: CRAN
-Date/Publication: 2019-12-17 14:50:02 UTC
+Date/Publication: 2020-01-07 08:40:14 UTC

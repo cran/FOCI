@@ -1,4 +1,4 @@
-d71983d29fa78f4e122e62ee02a9af80 *DESCRIPTION
+75820b17b3528215cf3112a2185bf51e *DESCRIPTION
 ca11f60911a30f62b5a1725f508281a0 *NAMESPACE
 667b86369cb9d444f0204a67e80820a6 *R/codec.R
 e8d5fa3ccebe5d20b5911a0e239e4411 *R/codecInternal.R
@@ -7,10 +7,10 @@ e8d5fa3ccebe5d20b5911a0e239e4411 *R/codecInternal.R
 7f315c5b3ca801d363703b503d47a02c *build/vignette.rds
 4a295b5012574db8b278962694126b18 *inst/doc/codec.R
 aa1cbb80dd2643ccd9ac6105876fe0cb *inst/doc/codec.Rmd
-dc69f082f005c43786075dff7d28ae59 *inst/doc/codec.html
+ab980938694312975980f040080aebcf *inst/doc/codec.html
 603a0d5029693c5e371a899be20dd0ba *inst/doc/foci.R
 71cb9856112e0e5611891d2797430c7d *inst/doc/foci.Rmd
-6430be23b7b5c39c64c68b9c971c274d *inst/doc/foci.html
+0e6ed50b043c2418a971bff652402e00 *inst/doc/foci.html
 792a502bc4ddbd8735a0993fcf040a51 *man/codec.Rd
 89cab9bb42105a5852d4658c494a1ac5 *man/foci.Rd
 aa1cbb80dd2643ccd9ac6105876fe0cb *vignettes/codec.Rmd
