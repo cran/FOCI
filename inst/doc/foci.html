@@ -8,7 +8,7 @@
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
 
@@ -115,9 +115,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -286,7 +283,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -303,18 +301,35 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 
-<p>Function <code>foci</code>, implements the Feature Ordering by Conditional Independence algorithm introduced in the paper <a href="https://arxiv.org/pdf/1910.12327.pdf"><em>A Simple Measure Of Conditional Dependence</em></a>. It produces an ordering of the predictors according to their predictive power. This ordering is used for variable selection without putting any assumption on the distribution of the data or assuming any particular underlying model. The simplicity of the estimation of the conditional dependence coefficient makes it an efficient method for variable ordering that can be used for high dimensional settings.</p>
+<p>Function <code>foci</code>, implements the variable selection algorithm <strong>Feature Ordering by Conditional Independence</strong> algorithm introduced in the paper <a href="https://arxiv.org/pdf/1910.12327.pdf"><em>A Simple Measure Of Conditional Dependence</em></a>. It produces an ordering of the predictors according to their predictive power. This ordering is used for variable selection without putting any assumption on the distribution of the data or assuming any particular underlying model. The simplicity of the estimation of the conditional dependence coefficient makes it an efficient method for variable ordering and variable selection that can be used for high dimensional settings.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(FOCI)</a></code></pre></div>
 <div id="example-1" class="section level3">
 <h3>Example 1</h3>
 <p>In the following example, <span class="math inline">\(Y\)</span> is a function of the first four columns of <span class="math inline">\(X\)</span> in a complex way.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">n =<span class="st"> </span><span class="dv">1000</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">p =<span class="st"> </span><span class="dv">150</span></a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">n =<span class="st"> </span><span class="dv">2000</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">p =<span class="st"> </span><span class="dv">100</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">X =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n <span class="op">*</span><span class="st"> </span>p), <span class="dt">ncol =</span> p)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">Y =<span class="st"> </span>X[, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>X[, <span class="dv">2</span>] <span class="op">+</span><span class="st"> </span><span class="kw">sin</span>(X[, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>X[, <span class="dv">3</span>]) <span class="op">+</span><span class="st"> </span>X[, <span class="dv">4</span>]<span class="op">^</span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">result =<span class="st"> </span><span class="kw">foci</span>(Y, X)</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">result</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; [1]  4 61</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw">colnames</span>(X) =<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">rep</span>(<span class="st">&quot;X&quot;</span>, p), <span class="kw">seq</span>(<span class="dv">1</span>, p))</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">Y =<span class="st"> </span>X[, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>X[, <span class="dv">2</span>] <span class="op">+</span><span class="st"> </span><span class="kw">sin</span>(X[, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>X[, <span class="dv">3</span>]) <span class="op">+</span><span class="st"> </span>X[, <span class="dv">4</span>]<span class="op">^</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">result1 =<span class="st"> </span><span class="kw">foci</span>(Y, X, <span class="dt">numCores =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">result1</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; $selectedVar</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;    index names</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; 1:     4    X4</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; 2:     1    X1</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; 3:     2    X2</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; 4:     3    X3</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; $stepT</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; [1] 0.3362018 0.3765848 0.6085929 0.7544184</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; attr(,&quot;class&quot;)</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; [1] &quot;foci&quot;</span></a></code></pre></div>
+</div>
+<div id="example-2" class="section level3">
+<h3>Example 2</h3>
+<p>In the previous example, using the default values of input variables <em>stop</em> and <em>num_feature</em> we let the function stop according to the foci algorithm’s stopping rule. The user can decide to stop after picking how many variables they want to. In this example, the user decides to stop the process after seeing exactly 5 selected variables.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">result2 =<span class="st"> </span><span class="kw">foci</span>(Y, X, <span class="dt">num_features =</span> <span class="dv">5</span>, <span class="dt">stop =</span> <span class="ot">FALSE</span>, <span class="dt">numCores =</span> <span class="dv">1</span>)</a></code></pre></div>
 </div>
 
 

@@ -2,6 +2,6 @@
 
 export(codec)
 export(foci)
-import(magrittr)
+import(data.table)
 importFrom(stats,complete.cases)
 importFrom(stats,sd)

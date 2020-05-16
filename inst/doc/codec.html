@@ -8,7 +8,7 @@
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
 
@@ -115,9 +115,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -286,7 +283,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -305,36 +303,49 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <div id="dependence-and-conditional-dependence" class="section level3">
 <h3>Dependence and Conditional Dependence</h3>
-<p>For random variable <span class="math inline">\(Y\)</span> and random vectors <span class="math inline">\(Z\)</span> and <span class="math inline">\(X\)</span>, <span class="math inline">\(T(Y, Z\mid X)\in[0, 1]\)</span>, conditional dependence coefficient, gives us a measure of dependence of <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span> given <span class="math inline">\(X\)</span>, which is zero if and only if <span class="math inline">\(Y\)</span> is independent of <span class="math inline">\(Z\)</span> given <span class="math inline">\(X\)</span> and is 1 if and only if <span class="math inline">\(Y\)</span> is a function of <span class="math inline">\(Z\)</span> given <span class="math inline">\(X\)</span>. Function <code>codec</code> estimates this value. The default value for <span class="math inline">\(X\)</span> is <code>NULL</code> and if is not provided by the user, it gives the dependence measure of <span class="math inline">\(Y\)</span> on <span class="math inline">\(Z\)</span>. For more details on the definition of <span class="math inline">\(T\)</span> and its properties, see the paper <a href="https://arxiv.org/pdf/1910.12327.pdf"><em>A Simple Measure Of Conditional Dependence</em></a>.</p>
-<p>Below you can see a simple example of this measure.</p>
+<p>For random variable <span class="math inline">\(Y\)</span> and random vectors <span class="math inline">\(Z\)</span> and <span class="math inline">\(X\)</span>, <span class="math inline">\(T(Y, Z\mid X)\in[0, 1]\)</span>, conditional dependence coefficient, gives a measure of dependence of <span class="math inline">\(Y\)</span> on <span class="math inline">\(Z\)</span> given <span class="math inline">\(X\)</span>. <span class="math inline">\(T(Y, Z\mid X)\)</span> is zero if and only if <span class="math inline">\(Y\)</span> is independent of <span class="math inline">\(Z\)</span> given <span class="math inline">\(X\)</span> and is 1 if and only if <span class="math inline">\(Y\)</span> is a function of <span class="math inline">\(Z\)</span> given <span class="math inline">\(X\)</span>. This measure is well-defined if <span class="math inline">\(Y\)</span> is not almost surely a function of <span class="math inline">\(X\)</span>. For more details on the definition of <span class="math inline">\(T\)</span> and its properties, and its estimator see the paper <a href="https://arxiv.org/pdf/1910.12327.pdf"><em>A Simple Measure Of Conditional Dependence</em></a>.</p>
+<p>Given a sample of <span class="math inline">\(n\)</span> i.i.d observations of triple <span class="math inline">\((X, Y, Z)\)</span>, we can estimate <span class="math inline">\(T(Y, Z\mid X)\)</span> efficiently in a non-parametric fashion. Function <code>codec</code> estimates this value. The default value for <span class="math inline">\(X\)</span> is <code>NULL</code> and if is not provided by the user, <code>codec</code> gives the estimate of the dependence measure of <span class="math inline">\(Y\)</span> on <span class="math inline">\(Z\)</span>, <span class="math inline">\(T(Y, Z)\)</span>.</p>
+<p>In the following examples, we illustrate the behavior of this estimator is different settings.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(FOCI)</a></code></pre></div>
+<p>In this example we have generated a <span class="math inline">\(10000 \times 3\)</span> matrix <span class="math inline">\(x\)</span>, with i.i.d elements from <span class="math inline">\(unif[0, 1]\)</span>. The observed value of <span class="math inline">\(y\)</span> is the sum of the elements of each row of <span class="math inline">\(x\)</span> mod <span class="math inline">\(1\)</span>. Although <span class="math inline">\(y\)</span> is a function of <span class="math inline">\(x\)</span>, it can be seen that it is independent of each of the single columns of <span class="math inline">\(x\)</span> or each pair of its columns. On the other hand conditional on the last column, <span class="math inline">\(y\)</span> is a function of the first two columns but it is still independent of any of the first two columns separately.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">n =<span class="st"> </span><span class="dv">10000</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">x1 =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(n), <span class="dt">ncol =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">x2 =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(n), <span class="dt">ncol =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">x3 =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(n), <span class="dt">ncol =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">y =<span class="st"> </span>(x1 <span class="op">+</span><span class="st"> </span>x2 <span class="op">+</span><span class="st"> </span>x3) <span class="op">%%</span><span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co"># y is independent of each of x1 and x2 and x3 </span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="kw">codec</span>(y, x1)</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; [1] 0.00032847</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="kw">codec</span>(y, x2)</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; [1] -0.01867527</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="kw">codec</span>(y, x3)</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; [1] -0.01617087</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co"># y is independent of the pair (x1, x2)</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="kw">codec</span>(y, <span class="kw">cbind</span>(x1, x2))</a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; [1] -0.00863463</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co"># y is a function of (x1, x2, x3)</span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="kw">codec</span>(y, <span class="kw">cbind</span>(x1, x2, x3))</a>
-<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; [1] 0.8753648</span></a>
-<a class="sourceLine" id="cb2-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co"># conditional on x3, y is a function of (x1, x2)</span></a>
-<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="kw">codec</span>(y, <span class="kw">cbind</span>(x1, x2), x3)</a>
-<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt; [1] 0.8773482</span></a>
-<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co"># conditional on x3, y is independent of x1</span></a>
-<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="kw">codec</span>(y, x1, x3)</a>
-<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">#&gt; [1] 0.004702005</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-2" data-line-number="2">p =<span class="st"> </span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">x =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(n <span class="op">*</span><span class="st"> </span>p), <span class="dt">ncol =</span> p)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">y =<span class="st"> </span>(x[, <span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>x[, <span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>x[, <span class="dv">3</span>]) <span class="op">%%</span><span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co"># y is independent of each of column of x </span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="kw">codec</span>(y, x[, <span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; [1] 0.01437267</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="kw">codec</span>(y, x[, <span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; [1] -0.01015683</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="kw">codec</span>(y, x[, <span class="dv">3</span>])</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; [1] 0.00413001</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co"># y is independent of the first two columns of x, x[, c(1, 2)]</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="kw">codec</span>(y, x[, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)])</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; [1] 0.00666201</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co"># y is a function of x</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="kw">codec</span>(y, x)</a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; [1] 0.8649315</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co"># conditional on the last column of x, y is a function of the first two columns</span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="kw">codec</span>(y, x[, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)], x[, <span class="dv">3</span>])</a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt; [1] 0.8643713</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co"># conditional on x[, 3], y is independent of x[, 1]</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="kw">codec</span>(y, x[, <span class="dv">1</span>], x[, <span class="dv">3</span>])</a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt; [1] -0.01184787</span></a></code></pre></div>
+<p>In the following example we have generated a <span class="math inline">\(10000 \times 2\)</span> matrix <span class="math inline">\(x\)</span>, with i.i.d normal standard elements. Each row of this matrix represent a point in the 2-dimensional plane. We call the square distance of this point from the origin <span class="math inline">\(y\)</span> and its angle with the horizontal axis, <span class="math inline">\(z\)</span>. It can be seen that <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span> are independent of each other, but conditional on any of the coordinates of the given point <span class="math inline">\(y\)</span> can be fully determind using <span class="math inline">\(z\)</span>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">n =<span class="st"> </span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">p =<span class="st"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">x =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n <span class="op">*</span><span class="st"> </span>p), <span class="dt">ncol =</span> p)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">y =<span class="st"> </span>x[, <span class="dv">1</span>]<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>x[, <span class="dv">2</span>]<span class="op">^</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">z =<span class="st"> </span><span class="kw">atan</span>(x[, <span class="dv">1</span>] <span class="op">/</span><span class="st"> </span>x[, <span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co"># y is independent of z</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="kw">codec</span>(y, z)</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; [1] -0.06764107</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co"># conditional on x[, 1], y is a function of z</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="kw">codec</span>(y, z, x[, <span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; [1] 0.8012802</span></a></code></pre></div>
 </div>
 
 

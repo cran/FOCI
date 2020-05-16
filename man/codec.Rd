@@ -2,9 +2,9 @@
 % Please edit documentation in R/codec.R
 \name{codec}
 \alias{codec}
-\title{Estimate conditional dependence coefficient (CODEC)}
+\title{Estimate the conditional dependence coefficient (CODEC)}
 \usage{
-codec(Y, Z, X = NULL, na.rm = TRUE, factor = TRUE)
+codec(Y, Z, X = NULL, na.rm = TRUE)
 }
 \arguments{
 \item{Y}{Vector (length n)}
@@ -14,8 +14,6 @@ codec(Y, Z, X = NULL, na.rm = TRUE, factor = TRUE)
 \item{X}{Matrix (n by p), default is NULL}
 
 \item{na.rm}{Remove NAs if TRUE}
-
-\item{factor}{Convert factor variables to integers if TRUE}
 }
 \value{
 The conditional dependence coefficient (CODEC) of Y and Z given X. If X == NULL, this is just a
@@ -24,7 +22,7 @@ measure of the dependence between Y and Z.
 \description{
 The conditional dependence coefficient (CODEC) is a measure of the amount of conditional dependence between
 a random variable Y and a random vector Z given a random vector X, based on an i.i.d. sample of (Y, Z, X).
-The coefficient can take any real value in a finite sample, but is asymptotically guaranteed to be between 0 and 1.
+The coefficient is asymptotically guaranteed to be between 0 and 1.
 }
 \details{
 The value returned by codec can be positive or negative. Asymptotically, it is guaranteed
@@ -47,11 +45,13 @@ codec(y, x, z)
 codec(y, z, x)
 }
 \references{
-Azadkia, M. and Chatterjee, S. (2019). A simple measure of conditional dependence. \url{https://arxiv.org/pdf/1910.12327.pdf}
+Azadkia, M. and Chatterjee, S. (2019). A simple measure
+of conditional dependence.
+\url{https://arxiv.org/pdf/1910.12327.pdf}.
 }
 \seealso{
-\code{\link{foci}}
+\code{\link{foci}}, \code{\link[XICOR]{xicor}}
 }
 \author{
-Mona Azadkia and Sourav Chatterjee
+Mona Azadkia, Sourav Chatterjee, Norman Matloff
 }

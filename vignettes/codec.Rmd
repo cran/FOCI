@@ -8,9 +8,12 @@ vignette: >
 ---
 
 ### Dependence and Conditional Dependence
-For random variable $Y$ and random vectors $Z$ and $X$, $T(Y, Z\mid X)\in[0, 1]$, conditional dependence coefficient, gives us a measure of dependence of $Y$ and $Z$ given $X$, which is zero if and only if $Y$ is independent of $Z$ given $X$ and is 1 if and only if $Y$ is a function of $Z$ given $X$. Function `codec` estimates this value. The default value for $X$ is `NULL` and if is not provided by the user, it gives the dependence measure of $Y$ on $Z$. For more details on the definition of $T$ and its properties, see the paper [*A Simple Measure Of Conditional Dependence*](https://arxiv.org/pdf/1910.12327.pdf).
+For random variable $Y$ and random vectors $Z$ and $X$, $T(Y, Z\mid X)\in[0, 1]$, conditional dependence coefficient, gives a measure of dependence of $Y$ on $Z$ given $X$. $T(Y, Z\mid X)$ is zero if and only if $Y$ is independent of $Z$ given $X$ and is 1 if and only if $Y$ is a function of $Z$ given $X$. This measure is well-defined if $Y$ is not almost surely a function of $X$. For more details on the definition of $T$ and its properties, and its estimator see the paper [*A Simple Measure Of Conditional Dependence*](https://arxiv.org/pdf/1910.12327.pdf).
 
-Below you can see a simple example of this measure.
+
+Given a sample of $n$ i.i.d observations of triple $(X, Y, Z)$, we can estimate $T(Y, Z\mid X)$ efficiently in a non-parametric fashion. Function `codec` estimates this value. The default value for $X$ is `NULL` and if is not provided by the user, `codec` gives the estimate of the dependence measure of $Y$ on $Z$, $T(Y, Z)$. 
+
+In the following examples, we illustrate the behavior of this estimator is different settings. 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -23,27 +26,39 @@ knitr::opts_chunk$set(fig.width=7, fig.height=5)
 library(FOCI)
 ```
 
+In this example we have generated a $10000 \times 3$ matrix $x$, with i.i.d elements from $unif[0, 1]$. The observed value of $y$ is the sum of the elements of each row of $x$ mod $1$. Although $y$ is a function of $x$, it can be seen that it is independent of each of the single columns of $x$ or each pair of its columns. On the other hand conditional on the last column, $y$ is a function of the first two columns but it is still independent of any of the first two columns separately. 
 ```{r}
 n = 10000
-x1 = matrix(runif(n), ncol = 1)
-x2 = matrix(runif(n), ncol = 1)
-x3 = matrix(runif(n), ncol = 1)
-y = (x1 + x2 + x3) %% 1
-# y is independent of each of x1 and x2 and x3 
-codec(y, x1)
-codec(y, x2)
-codec(y, x3)
+p = 3
+x = matrix(runif(n * p), ncol = p)
+y = (x[, 1] + x[, 2] + x[, 3]) %% 1
+# y is independent of each of column of x 
+codec(y, x[, 1])
+codec(y, x[, 2])
+codec(y, x[, 3])
 
-# y is independent of the pair (x1, x2)
-codec(y, cbind(x1, x2))
+# y is independent of the first two columns of x, x[, c(1, 2)]
+codec(y, x[, c(1, 2)])
 
-# y is a function of (x1, x2, x3)
-codec(y, cbind(x1, x2, x3))
+# y is a function of x
+codec(y, x)
 
-# conditional on x3, y is a function of (x1, x2)
-codec(y, cbind(x1, x2), x3)
-# conditional on x3, y is independent of x1
-codec(y, x1, x3)
+# conditional on the last column of x, y is a function of the first two columns
+codec(y, x[, c(1, 2)], x[, 3])
+# conditional on x[, 3], y is independent of x[, 1]
+codec(y, x[, 1], x[, 3])
 
 ```
 
+In the following example we have generated a $10000 \times 2$ matrix $x$, with i.i.d normal standard elements. Each row of this matrix represent a point in the 2-dimensional plane. We call the square distance of this point from the origin $y$ and its angle with the horizontal axis, $z$. It can be seen that $y$ and $z$ are independent of each other, but conditional on any of the coordinates of the given point $y$ can be fully determind using $z$.
+```{r}
+n = 1000
+p = 2
+x = matrix(rnorm(n * p), ncol = p)
+y = x[, 1]^2 + x[, 2]^2
+z = atan(x[, 1] / x[, 2])
+# y is independent of z
+codec(y, z)
+# conditional on x[, 1], y is a function of z
+codec(y, z, x[, 1])
+```

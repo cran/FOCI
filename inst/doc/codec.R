@@ -10,24 +10,34 @@ library(FOCI)
 
 ## -----------------------------------------------------------------------------
 n = 10000
-x1 = matrix(runif(n), ncol = 1)
-x2 = matrix(runif(n), ncol = 1)
-x3 = matrix(runif(n), ncol = 1)
-y = (x1 + x2 + x3) %% 1
-# y is independent of each of x1 and x2 and x3 
-codec(y, x1)
-codec(y, x2)
-codec(y, x3)
+p = 3
+x = matrix(runif(n * p), ncol = p)
+y = (x[, 1] + x[, 2] + x[, 3]) %% 1
+# y is independent of each of column of x 
+codec(y, x[, 1])
+codec(y, x[, 2])
+codec(y, x[, 3])
 
-# y is independent of the pair (x1, x2)
-codec(y, cbind(x1, x2))
+# y is independent of the first two columns of x, x[, c(1, 2)]
+codec(y, x[, c(1, 2)])
 
-# y is a function of (x1, x2, x3)
-codec(y, cbind(x1, x2, x3))
+# y is a function of x
+codec(y, x)
 
-# conditional on x3, y is a function of (x1, x2)
-codec(y, cbind(x1, x2), x3)
-# conditional on x3, y is independent of x1
-codec(y, x1, x3)
+# conditional on the last column of x, y is a function of the first two columns
+codec(y, x[, c(1, 2)], x[, 3])
+# conditional on x[, 3], y is independent of x[, 1]
+codec(y, x[, 1], x[, 3])
 
+
+## -----------------------------------------------------------------------------
+n = 1000
+p = 2
+x = matrix(rnorm(n * p), ncol = p)
+y = x[, 1]^2 + x[, 2]^2
+z = atan(x[, 1] / x[, 2])
+# y is independent of z
+codec(y, z)
+# conditional on x[, 1], y is a function of z
+codec(y, z, x[, 1])
 
