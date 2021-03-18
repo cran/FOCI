@@ -314,26 +314,26 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb2-4" data-line-number="4">y =<span class="st"> </span>(x[, <span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>x[, <span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>x[, <span class="dv">3</span>]) <span class="op">%%</span><span class="st"> </span><span class="dv">1</span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co"># y is independent of each of column of x </span></a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"><span class="kw">codec</span>(y, x[, <span class="dv">1</span>])</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; [1] 0.01437267</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; [1] -0.00225687</span></a>
 <a class="sourceLine" id="cb2-8" data-line-number="8"><span class="kw">codec</span>(y, x[, <span class="dv">2</span>])</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; [1] -0.01015683</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; [1] 0.01326747</span></a>
 <a class="sourceLine" id="cb2-10" data-line-number="10"><span class="kw">codec</span>(y, x[, <span class="dv">3</span>])</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; [1] 0.00413001</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; [1] 0.00130965</span></a>
 <a class="sourceLine" id="cb2-12" data-line-number="12"></a>
 <a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co"># y is independent of the first two columns of x, x[, c(1, 2)]</span></a>
 <a class="sourceLine" id="cb2-14" data-line-number="14"><span class="kw">codec</span>(y, x[, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)])</a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; [1] 0.00666201</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; [1] -0.00191775</span></a>
 <a class="sourceLine" id="cb2-16" data-line-number="16"></a>
 <a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co"># y is a function of x</span></a>
 <a class="sourceLine" id="cb2-18" data-line-number="18"><span class="kw">codec</span>(y, x)</a>
-<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; [1] 0.8649315</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; [1] 0.8649652</span></a>
 <a class="sourceLine" id="cb2-20" data-line-number="20"></a>
 <a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co"># conditional on the last column of x, y is a function of the first two columns</span></a>
 <a class="sourceLine" id="cb2-22" data-line-number="22"><span class="kw">codec</span>(y, x[, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)], x[, <span class="dv">3</span>])</a>
-<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt; [1] 0.8643713</span></a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt; [1] 0.8647881</span></a>
 <a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co"># conditional on x[, 3], y is independent of x[, 1]</span></a>
 <a class="sourceLine" id="cb2-25" data-line-number="25"><span class="kw">codec</span>(y, x[, <span class="dv">1</span>], x[, <span class="dv">3</span>])</a>
-<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt; [1] -0.01184787</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt; [1] 0.02025655</span></a></code></pre></div>
 <p>In the following example we have generated a <span class="math inline">\(10000 \times 2\)</span> matrix <span class="math inline">\(x\)</span>, with i.i.d normal standard elements. Each row of this matrix represent a point in the 2-dimensional plane. We call the square distance of this point from the origin <span class="math inline">\(y\)</span> and its angle with the horizontal axis, <span class="math inline">\(z\)</span>. It can be seen that <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span> are independent of each other, but conditional on any of the coordinates of the given point <span class="math inline">\(y\)</span> can be fully determind using <span class="math inline">\(z\)</span>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">n =<span class="st"> </span><span class="dv">1000</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">p =<span class="st"> </span><span class="dv">2</span></a>
@@ -342,10 +342,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb3-5" data-line-number="5">z =<span class="st"> </span><span class="kw">atan</span>(x[, <span class="dv">1</span>] <span class="op">/</span><span class="st"> </span>x[, <span class="dv">2</span>])</a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co"># y is independent of z</span></a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"><span class="kw">codec</span>(y, z)</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; [1] -0.06764107</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; [1] -0.01983902</span></a>
 <a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co"># conditional on x[, 1], y is a function of z</span></a>
 <a class="sourceLine" id="cb3-10" data-line-number="10"><span class="kw">codec</span>(y, z, x[, <span class="dv">1</span>])</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; [1] 0.8012802</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; [1] 0.8077018</span></a></code></pre></div>
 </div>
 
 

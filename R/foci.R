@@ -292,8 +292,10 @@ foci <- function(Y, X, num_features = NULL, stop = TRUE, na.rm = TRUE,
   if (printIntermed) print(slc)
 
   slc <- Reduce(union, slc)
-  # May 15, Mona removed FOCI:::
-  res <- foci_main(Y, X[, slc], num_features, stop)
+  ## 17.02.2021: Check whether windows of mac
+  numCores <- if (.Platform$OS.type == 'windows') 1 else parallel::detectCores()
+
+  res <- foci_main(Y, X[, slc], num_features, stop, numCores=numCores)
   # must translate indices in reduced system to those of original
   newIdxs <- res$selectedVar$index
   origIdxs <- slc[newIdxs]

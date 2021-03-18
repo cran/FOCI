@@ -1,7 +1,7 @@
 Package: FOCI
 Type: Package
 Title: Feature Ordering by Conditional Independence
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: c(person("Mona", "Azadkia", email = "monaazadkia@gmail.com", 
     role = c("aut", "cre")),
     person("Sourav", "Chatterjee", email = "souravc@stanford.edu",
@@ -20,9 +20,9 @@ Suggests: knitr, rmarkdown, testthat
 Depends: R (>= 3.6.0), data.table
 Imports: RANN, proxy, parallel, gmp
 NeedsCompilation: no
-Packaged: 2020-05-16 05:17:36 UTC; monaazadkia
+Packaged: 2021-02-17 10:13:45 UTC; monaazadkia
 Author: Mona Azadkia [aut, cre],
   Sourav Chatterjee [aut, ctb],
   Norman Matloff [aut, ctb]
 Repository: CRAN
-Date/Publication: 2020-05-16 05:40:07 UTC
+Date/Publication: 2021-03-18 23:00:07 UTC
